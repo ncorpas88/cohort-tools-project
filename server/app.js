@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors")
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 
@@ -11,6 +12,7 @@ const PORT = 5005;
 
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
+
 
 const cohorts = require("./cohorts.json")
 app.get("/api/cohorts", (req, res) => {
@@ -31,6 +33,9 @@ app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors({
+  origin: ['http://localhost:5005', 'http://localhost:5173'],
+}))
 
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
