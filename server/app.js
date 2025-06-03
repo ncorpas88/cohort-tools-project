@@ -58,7 +58,9 @@ const cohortSchema = new Schema({
   totalHours: Number,
 });
 
-const studentsSchema = new Schema ({
+const Cohort = mongoose.model('Cohort', cohortSchema)
+
+const studentSchema = new Schema ({
   firstName: String, 
   lastName: String,
   email: String,
@@ -69,9 +71,12 @@ const studentsSchema = new Schema ({
   background: String,
   image: String,
   projects: [],
-  cohort
-
+  cohort: { type: Schema.Types.ObjectId, ref: 'Cohort' },
 })
+
+const Student = mongoose.model('Student', studentSchema)
+
+module.exports = { Cohort, Student };
 
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
