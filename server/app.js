@@ -58,6 +58,21 @@ const cohortSchema = new Schema({
   totalHours: Number,
 });
 
+const studentsSchema = new Schema ({
+  firstName: String, 
+  lastName: String,
+  email: String,
+  phone: String, 
+  linkedinURL: String,
+  languages: { type: String, enum: ['English', 'Dutch', 'Portuguese', 'French', 'Spanish', 'German'] },
+  program: String,
+  background: String,
+  image: String,
+  projects: [],
+  cohort
+
+})
+
 
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
