@@ -58,11 +58,43 @@ app.get("/docs", (req, res) => {
 
 app.post(("/api/students"), async(req, res) => {
   try {
-    const response = await new Student
+    const response = await Student.create({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      linkedinURL: req.body.linkedinURL,
+      languages: req.body.languages,
+      program: req.body.program,
+      background: req.body.background,
+      image: req.body.image,
+      projects: req.body.projects
+    })
+    res.json(response)
   } catch (error) {
-    
+    console.log(error)
   }
 })
+
+app.get("/api/students", async(req, res) => {
+  try {
+    const response = await Student.find({})
+    res.json(response)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.get("/api/students/cohort/:cohortId", async(req, res) => {
+  try {
+    const response = await Student.findById(req.params._id)
+    res.json(response)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
 
 
 // START SERVER
