@@ -90,7 +90,8 @@ app.get("/api/students", async(req, res) => {
 //Devuelve todos los estudiantes de un cohort 
 app.get("/api/students/cohort/:cohortId", async(req, res) => {
   try {
-    const response = await Cohort.findById(req.params.cohortId)
+    // se busca en Student los estudiantes que su cohort sea igualal id dentro del params
+    const response = await Student.find({cohort: req.params.cohortId})
     res.json(response)
   } catch (error) {
     console.log(error)
