@@ -4,10 +4,9 @@ const cors = require("cors")
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const mongoose = require("mongoose");
-const Student = require("./models/Student.model");
-const Cohort = require("./models/Cohort.model")
 
-mongoose.connect("mongodb://127.0.0.1:27017/cohort-tool-project")
+//Cambiar nombre de la base de datos
+mongoose.connect("mongodb://127.0.0.1:27017/cohort-tools-api")
 .then(x => console.log(`Connected to Database: "${x.connections[0].name}"`))
 .catch(err => console.error("Error connecting to MongoDB", err));
 
@@ -57,6 +56,7 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
+//Crear un nuevo estudiante
 app.post(("/api/students"), async(req, res) => {
   try {
     const response = await Student.create({
@@ -77,6 +77,7 @@ app.post(("/api/students"), async(req, res) => {
   }
 })
 
+//Devolver todos los estudiantes
 app.get("/api/students", async(req, res) => {
   try {
     const response = await Student.find({})
@@ -86,15 +87,17 @@ app.get("/api/students", async(req, res) => {
   }
 })
 
+//Devuelve todos los estudiantes de un cohort 
 app.get("/api/students/cohort/:cohortId", async(req, res) => {
   try {
-    const response = await Cohort.findById(req.params._id)
+    const response = await Cohort.findById(req.params.cohortId)
     res.json(response)
   } catch (error) {
     console.log(error)
   }
 })
 
+//Devuelve un estudiante en especifico mediante si ID
 app.get("/api/students/:studentId", async(req, res) => {
   try {
     const response = await Student.findById(req.params.studentId)
@@ -104,6 +107,7 @@ app.get("/api/students/:studentId", async(req, res) => {
   }
 })
 
+//Actualiza todos los datos de un estudiante en especifico
 app.put("/api/students/:studentId", async(req, res) => {
   try {
     const responseFromDB = await Student.findByIdAndUpdate(req.params.studentId, {})
@@ -113,17 +117,79 @@ app.put("/api/students/:studentId", async(req, res) => {
   }
 })
 
+//Elimina un estudiante en concreto
 app.delete("/api/students/:studentId", async (req, res) => {
   try {
-    const response = await Student.findByIdAndDelete(req.params.studentId)
+    await Student.findByIdAndDelete(req.params.studentId)
+    res.send("Estudiante borrado")
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+const Cohort = require("./models/Cohort.model")
+
+//Crear un nuevo cohort
+app.post("/api/cohorts", async(req,res)=>{
+try {
+  const response = await Cohort.create({
+    inProgress: req.body.inProgress,
+    cohortSlug: req.body.cohortSlug,
+    cohortName: req.body.cohortName,
+    program: req.body.program,
+    campus: req.body.campus,
+    startDate : req.body.startDate,
+    endDate: req.body.endDate,
+    programManager: req.body.programManager,
+    leadTeacher: req.body.leadTeacher,
+    totalHours: req.body.totalHours,
+  })
+  res.json(response)
+  res.send("Cohort creado")
+} catch (error) {
+  console.log(error)
+}
+})
+
+//Devolver todos los cohorts
+app.get("/api/cohorts", async(req,res) =>{
+  try {
+    const response = await Cohort.find({})
     res.json(response)
   } catch (error) {
     console.log(error)
   }
 })
 
+//Devuelve un cohort en especifico mediante su ID
+app.get("/api/cohorts/:cohortId", async(req,res) =>{
+  try {
+    const response = await Cohort.findById(req.params.cohortId)
+    res.json(response)
+  } catch (error) {
+    console.log(error)
+  }
+})
 
+//Actualiza los datos de un cohort en especifico
+app.put("/api/cohorts/:cohortId", async(req,res) => {
+  try {
+    const response = await Cohort.findByIdAndUpdate(req.params.cohortId)
+    res.json(response)
+  } catch (error) {
+    console.log(error)
+  }
+})
 
+//Elimina un cohort en especifico
+app.delete("/api/cohorts/:cohortId",async(req,res)=> {
+  try {
+    await Cohort.findByIdAndDelete(req.params.cohortId)
+    res.send("Cohort Eliminado")
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 // START SERVER
 app.listen(PORT, () => {

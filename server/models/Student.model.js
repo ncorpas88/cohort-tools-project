@@ -14,7 +14,7 @@ const studentSchema = new mongoose.Schema ({
   image: String,
   projects: [String],
   cohort: { 
-    type: Schema.Types.ObjectId, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'Cohort' 
   },
 })
