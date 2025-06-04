@@ -4,6 +4,7 @@ const cors = require("cors")
 const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const mongoose = require("mongoose");
+const Student = require("./models/Student.model");
 
 mongoose.connect("mongodb://127.0.0.1:27017/cohort-tools-api")
 .then(x => console.log(`Connected to Database: "${x.connections[0].name}"`))
@@ -49,9 +50,19 @@ app.use(cors({
 // Devs Team - Start working on the routes here:
 // ...
 
+const Student = require("./models/Student.model")
+
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
+
+app.post(("/api/students"), async(req, res) => {
+  try {
+    const response = await new Student
+  } catch (error) {
+    
+  }
+})
 
 
 // START SERVER
