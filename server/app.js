@@ -5,8 +5,9 @@ const cookieParser = require("cookie-parser");
 const PORT = 5005;
 const mongoose = require("mongoose");
 const Student = require("./models/Student.model");
+const Cohort = require("./models/Cohort.model")
 
-mongoose.connect("mongodb://127.0.0.1:27017/cohort-tools-api")
+mongoose.connect("mongodb://127.0.0.1:27017/cohort-tool-project")
 .then(x => console.log(`Connected to Database: "${x.connections[0].name}"`))
 .catch(err => console.error("Error connecting to MongoDB", err));
 
@@ -87,7 +88,7 @@ app.get("/api/students", async(req, res) => {
 
 app.get("/api/students/cohort/:cohortId", async(req, res) => {
   try {
-    const response = await Student.findById(req.params._id)
+    const response = await Cohort.findById(req.params._id)
     res.json(response)
   } catch (error) {
     console.log(error)
@@ -105,11 +106,22 @@ app.get("/api/students/:studentId", async(req, res) => {
 
 app.put("/api/students/:studentId", async(req, res) => {
   try {
-    const responseFromDB = await Student.findByIdAnsUpdate(req.params.studentId, {})
+    const responseFromDB = await Student.findByIdAndUpdate(req.params.studentId, {})
+    res.json(responseFromDB)
   } catch (error) {
     console.log(error)
   }
 })
+
+app.delete("/api/students/:studentId", async (req, res) => {
+  try {
+    const response = await Student.findByIdAndDelete(req.params.studentId)
+    res.json(response)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
 
 
 
