@@ -94,6 +94,22 @@ app.get("/api/students/cohort/:cohortId", async(req, res) => {
   }
 })
 
+app.get("/api/students/:studentId", async(req, res) => {
+  try {
+    const response = await Student.findById(req.params.studentId)
+    res.json(response)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+app.put("/api/students/:studentId", async(req, res) => {
+  try {
+    const responseFromDB = await Student.findByIdAnsUpdate(req.params.studentId, {})
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 
 
