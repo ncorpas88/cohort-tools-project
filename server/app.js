@@ -45,40 +45,6 @@ app.use(cors({
 }))
 
 
-const cohortSchema = new Schema({
-  inProgress: Boolean,
-  cohortSlug: String,
-  cohortName: String,
-  program: String,
-  campus: String,
-  startDate: String, 
-  endDate: String,
-  programManager: String,
-  leadTeacher: String, 
-  totalHours: Number,
-});
-
-const Cohort = mongoose.model('Cohort', cohortSchema)
-
-const studentSchema = new Schema ({
-  firstName: String, 
-  lastName: String,
-  email: String,
-  phone: String, 
-  linkedinURL: String,
-  languages: { type: String, enum: ['English', 'Dutch', 'Portuguese', 'French', 'Spanish', 'German'] },
-  program: String,
-  background: String,
-  image: String,
-  projects: [],
-  cohort: { type: Schema.Types.ObjectId, ref: 'Cohort' },
-})
-
-const Student = mongoose.model('Student', studentSchema)
-
-module.exports = { Cohort, Student };
-
-
 // ROUTES - https://expressjs.com/en/starter/basic-routing.html
 // Devs Team - Start working on the routes here:
 // ...
