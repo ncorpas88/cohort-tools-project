@@ -1,7 +1,6 @@
+const {Schema, model} = require("mongoose");
 
-const mongoose = require("mongoose");
-
-const cohortSchema = new mongoose.Schema({
+const cohortSchema = new Schema({
   inProgress: Boolean,
   cohortSlug: String,
   cohortName: String,
@@ -14,5 +13,5 @@ const cohortSchema = new mongoose.Schema({
   totalHours: Number,
 });
 
-const Cohort = mongoose.model('Cohort', cohortSchema)
+const Cohort = model('Cohort', cohortSchema)
 module.exports = Cohort
