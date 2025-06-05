@@ -11,26 +11,12 @@ mongoose.connect("mongodb://127.0.0.1:27017/cohort-tools-api")
 .catch(err => console.error("Error connecting to MongoDB", err));
 
 
-
 // STATIC DATA
 // Devs Team - Import the provided files with JSON data of students and cohorts here:
 // ...
 
-
-
 // INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
-
-
-// const cohorts = require("./cohorts.json")
-// app.get("/api/cohorts", (req, res) => {
-//   res.json(cohorts)
-// })
-
-// const students = require("./students.json")
-// app.get("/api/students", (req, res) => {
-//   res.json(students)
-// })
 
 
 // MIDDLEWARE
@@ -81,6 +67,7 @@ app.post(("/api/students"), async(req, res) => {
 app.get("/api/students", async(req, res) => {
   try {
     const response = await Student.find({})
+    .populate("cohort")
     res.json(response)
   } catch (error) {
     console.log(error)
@@ -90,8 +77,9 @@ app.get("/api/students", async(req, res) => {
 //Devuelve todos los estudiantes de un cohort 
 app.get("/api/students/cohort/:cohortId", async(req, res) => {
   try {
-    // se busca en Student los estudiantes que su cohort sea igualal id dentro del params
+    // se busca en Student los estudiantes que su cohort sea igual al id dentro del params
     const response = await Student.find({cohort: req.params.cohortId})
+    .populate("cohort")
     res.json(response)
   } catch (error) {
     console.log(error)
@@ -102,6 +90,7 @@ app.get("/api/students/cohort/:cohortId", async(req, res) => {
 app.get("/api/students/:studentId", async(req, res) => {
   try {
     const response = await Student.findById(req.params.studentId)
+    .populate("cohort")
     res.json(response)
   } catch (error) {
     console.log(error)
@@ -111,7 +100,18 @@ app.get("/api/students/:studentId", async(req, res) => {
 //Actualiza todos los datos de un estudiante en especifico
 app.put("/api/students/:studentId", async(req, res) => {
   try {
-    const responseFromDB = await Student.findByIdAndUpdate(req.params.studentId, {})
+    const responseFromDB = await Student.findByIdAndUpdate(req.params.studentId, {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      phone: req.body.phone,
+      linkedinURL: req.body.linkedinURL,
+      languages: req.body.languages,
+      program: req.body.program,
+      background: req.body.background,
+      image: req.body.image,
+      projects: req.body.projects
+    })
     res.json(responseFromDB)
   } catch (error) {
     console.log(error)
@@ -175,7 +175,18 @@ app.get("/api/cohorts/:cohortId", async(req,res) =>{
 //Actualiza los datos de un cohort en especifico
 app.put("/api/cohorts/:cohortId", async(req,res) => {
   try {
-    const response = await Cohort.findByIdAndUpdate(req.params.cohortId)
+    const response = await Cohort.findByIdAndUpdate(req.params.cohortId, {
+      inProgress: req.body.inProgress,
+    cohortSlug: req.body.cohortSlug,
+    cohortName: req.body.cohortName,
+    program: req.body.program,
+    campus: req.body.campus,
+    startDate : req.body.startDate,
+    endDate: req.body.endDate,
+    programManager: req.body.programManager,
+    leadTeacher: req.body.leadTeacher,
+    totalHours: req.body.totalHours,
+    })
     res.json(response)
   } catch (error) {
     console.log(error)
