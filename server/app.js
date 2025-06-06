@@ -1,3 +1,5 @@
+process.loadEnvFile()
+
 const express = require("express")
 const app = express();
 
