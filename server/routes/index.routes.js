@@ -7,6 +7,7 @@ router.use("/students", studentRouter)
 const cohortRouter = require("./cohort.routes")
 router.use("/cohorts", cohortRouter)
 
+const verifyToken = require("../middlewares/auth.middlewares")
 
 router.get("/",(req,res,next) => {
     res.json("Todo OK")
@@ -18,9 +19,13 @@ router.use("/auth", authRouter)
 const User = require("../models/User.model")
 
 
-router.get("/users/:id", async (req, res, next) => {
+router.get("/users/:id",verifyToken, async (req, res, next) => {
+  console.log(req.payload)
   try {
-    const response = await User.findById(req.params.id)
+    console.log(req.params.id)
+    
+    const response = await User.findById(req.payload._id)
+      res.json(response)
   } catch (error) {
     next(error)
   }

@@ -42,12 +42,9 @@ router.post("/signup", async(req,res,next) => {
 
         res.sendStatus(201)
 
-
     } catch (error) {
         next(error)
     }
-
-    res.send("todobien")
 })
 
 //Ruta para hacer login
