@@ -15,6 +15,18 @@ router.get("/",(req,res,next) => {
 const authRouter = require("./auth.routes")
 router.use("/auth", authRouter)
 
+const User = require("../models/User.model")
+
+
+router.get("/users/:id", async (req, res, next) => {
+  try {
+    const response = await User.findById(req.params.id)
+  } catch (error) {
+    next(error)
+  }
+})
+
+
 module.exports = router
 
 /* 
